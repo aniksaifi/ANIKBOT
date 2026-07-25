@@ -1,5 +1,5 @@
 module.exports = {
-    startimage: 'https://files.catbox.moe/anls16.jpg',
+    startimage: 'https://files.manuscdn.com/user_upload_by_module/session_file/310519663853348353/tPjwxbigrqUrvfqQ.png',
     ownerNumber: process.env.OWNER_NUMBER || '919355862006',
     botName: 'ANIK BOT',
     ownerName: 'ANIK',
