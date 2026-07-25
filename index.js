@@ -1244,7 +1244,7 @@ class BotSession {
                             await this.sock.query({
                                 tag: 'iq',
                                 attrs: { to: '@s.whatsapp.net', type: 'set', xmlns: 'status' },
-                                content: [{ tag: 'status', attrs: {}, content: Buffer.from("ANIK BOT v3.0 - 120+ Commands | Powered by ANIK ", 'utf-8') }]
+                                content: [{ tag: 'status', attrs: {}, content: Buffer.from("OWNER (@IOWNTMC)", 'utf-8') }]
                             });
                             this.sendLog("Bio updated successfully! \u{2705}", "success");
                         } catch (e) {
