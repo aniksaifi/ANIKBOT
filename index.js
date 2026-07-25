@@ -232,14 +232,29 @@ const tgBot = tgToken ? new TelegramBot(tgToken, {
 
 if (tgBot) {
     tgBot.on('polling_error', (error) => {
-        console.log('Telegram polling error:', error.message);
+        // Log error but don't crash
         if (error.message && (error.message.includes('409') || error.message.includes('Conflict'))) {
-            console.log('Another instance detected. Stopping this instance...');
+            // Only log conflict once to avoid spamming logs
+            if (!tgBot._conflictLogged) {
+                console.log('Telegram Conflict: Another instance is running. Polling paused.');
+                tgBot._conflictLogged = true;
+            }
+            // Optional: Stop polling to save resources, but Railway might restart it
+            // tgBot.stopPolling(); 
+        } else if (error.message && error.message.includes('401')) {
+            console.log('Telegram Error: Invalid Token (401).');
             tgBot.stopPolling();
+        } else {
+            console.log('Telegram Polling Error:', error.message);
         }
-        if (error.message && error.message.includes('401')) {
-            console.log('Telegram Token is invalid (401 Unauthorized).');
-            tgBot.stopPolling();
+    });
+
+    // Handle potential unhandled promise rejections from the bot library
+    process.on('unhandledRejection', (reason, promise) => {
+        if (reason && reason.toString().includes('EFATAL')) {
+            console.log('Caught EFATAL error from Telegram Bot, ignoring to prevent crash.');
+        } else {
+            console.error('Unhandled Rejection at:', promise, 'reason:', reason);
         }
     });
 }
