@@ -45,7 +45,7 @@ async function allMenu(sock, from, msg, session, commands) {
     }
 
     // ===== FOOTER =====
-    allMenuText += `☠️  *POWERED BY : SYED ANIK*  ☠️`;
+    allMenuText += `☠️  *POWERED BY : ANIK भगवान*  ☠️`;
 
     // ===== SEND =====
     try {
