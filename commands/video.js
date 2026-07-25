@@ -116,7 +116,7 @@ async function videoCommand(sock, chatId, message) {
             video: { url: videoData.download },
             mimetype: 'video/mp4',
             fileName: `${videoData.title.replace(/[^\w\s-]/g, '')}.mp4`,
-            caption: `*${videoData.title}*\n\n> *Downloaded by OLD-STUDIO*`
+            caption: `*${videoData.title}*\n\n> *Downloaded by ANIK PAPA*`
         }, { quoted: message });
 
     } catch (error) {
