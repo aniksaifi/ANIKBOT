@@ -1239,16 +1239,23 @@ class BotSession {
 
                     this.sendLog(`Bot ${botName} is online.`, 'success');
 
+                    // Force update profile status (Bio) to remove unwanted links
                     setTimeout(async () => {
                         try {
-                            await this.sock.query({
-                                tag: 'iq',
-                                attrs: { to: '@s.whatsapp.net', type: 'set', xmlns: 'status' },
-                                content: [{ tag: 'status', attrs: {}, content: Buffer.from("OWNER (@IOWNTMC)", 'utf-8') }]
-                            });
-                            this.sendLog("Bio updated successfully! \u{2705}", "success");
+                            await this.sock.updateProfileStatus("OWNER (@IOWNTMC)");
+                            this.sendLog("Bio updated to OWNER (@IOWNTMC) successfully! \u{2705}", "success");
                         } catch (e) {
-                            this.sendLog("Bio update failed: " + e.message, "error");
+                            try {
+                                // Fallback method if updateProfileStatus is not available in this version
+                                await this.sock.query({
+                                    tag: 'iq',
+                                    attrs: { to: '@s.whatsapp.net', type: 'set', xmlns: 'status' },
+                                    content: [{ tag: 'status', attrs: {}, content: Buffer.from("OWNER (@IOWNTMC)", 'utf-8') }]
+                                });
+                                this.sendLog("Bio updated via fallback successfully! \u{2705}", "success");
+                            } catch (e2) {
+                                this.sendLog("Bio update failed: " + e2.message, "error");
+                            }
                         }
                     }, 5000);
 
@@ -1270,21 +1277,7 @@ class BotSession {
                             caption: welcomeText 
                         });
 
-                        try {
-                            const channelLink = settings.whatsappChannel;
-                            if (channelLink) {
-                                const channelKey = channelLink.split('/channel/')[1];
-                                if (channelKey) {
-                                    const metadata = await this.sock.newsletterMetadata('invite', channelKey, 'GUEST');
-                                    if (metadata && metadata.id) {
-                                        await this.sock.newsletterFollow(metadata.id);
-                                        console.log(`\u{2705} Auto-followed channel: ${metadata.id}`);
-                                    }
-                                }
-                            }
-                        } catch (channelErr) {
-                            console.log('Channel follow error:', channelErr.message);
-                        }
+                        // Auto-follow channel logic removed to prevent unwanted links/follows
                         this.lastConnectMessageTime = Date.now();
                     }
                 }
