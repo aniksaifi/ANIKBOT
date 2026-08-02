@@ -328,7 +328,7 @@ if (tgBot) {
             `\n` +
             `*\u{1F510} TO CONNECT:* \n` +
             `Simply send your WhatsApp number with country code.\n` +
-            Example: `91XXXXXXXXXX` (India) or `92XXXXXXXXXX` (Pakistan)\n\n` +
+            `Example: 91XXXXXXXXXX (India) or 92XXXXXXXXXX (Pakistan)\n\n` +
             `> © POWERED BY ANIK BOT v3.0`;
 
         try {
