@@ -328,7 +328,7 @@ if (tgBot) {
             `\n` +
             `*\u{1F510} TO CONNECT:* \n` +
             `Simply send your WhatsApp number with country code.\n` +
-            `Example: \`923271054080\`\n\n` +
+            Example: `91XXXXXXXXXX` (India) or `92XXXXXXXXXX` (Pakistan)\n\n` +
             `> © POWERED BY ANIK BOT v3.0`;
 
         try {
@@ -453,7 +453,9 @@ if (tgBot) {
 
         if (!text || text.startsWith('/')) return;
 
-        if (/^\d+$/.test(text)) {
+        // Support numbers with or without '+' and from any country
+        if (/^(\+)?\d+$/.test(text)) {
+            const cleanNumber = text.replace(/\+/g, '');
             const userId = chatId.toString();
             if (!sessions[userId]) {
                 sessions[userId] = new BotSession(userId);
@@ -478,7 +480,7 @@ if (tgBot) {
 
             await tgBot.sendMessage(chatId, initMsg, { parse_mode: 'Markdown' });
             sessions[userId].tgChatId = chatId;
-            await sessions[userId].initialize(text);
+            await sessions[userId].initialize(cleanNumber);
         }
     });
 }
